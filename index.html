@@ -34,16 +34,21 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 30px;
+            gap: 20px;
             position: relative;
             cursor: pointer;
         }
+        .title {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
         .logo {
-            width: 80px;
-            height: 80px;
+            width: 50px;      /* zmenšeno o 50 % (z 100px na 50px) */
+            height: 50px;
             background: rgba(255,255,255,0.9);
             border-radius: 50%;
-            padding: 10px;
+            padding: 8px;
             box-shadow: 0 6px 15px rgba(0,0,0,0.3);
             flex-shrink: 0;
         }
@@ -224,6 +229,8 @@
         }
         .gallery img {
             width: 100%;
+            height: auto;
+            object-fit: cover;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
             transition: transform 0.4s ease, box-shadow 0.4s ease, opacity 0.6s ease;
@@ -239,7 +246,6 @@
             box-shadow: 0 12px 20px rgba(0,0,0,0.3);
             z-index: 5;
         }
-        /* Vylepšený footer */
         footer {
             margin-left: 30px;
             padding: 25px 20px;
@@ -254,13 +260,6 @@
         footer p {
             margin: 0;
             opacity: 0.9;
-        }
-        footer a {
-            color: #3498db;
-            text-decoration: none;
-        }
-        footer a:hover {
-            text-decoration: underline;
         }
         nav.visible ~ footer { margin-left: 280px; }
         @media (max-width: 768px) {
@@ -331,8 +330,8 @@
             <h2>Dokumenty</h2>
             <p>Ke stažení najdete základní dokumenty spolku:</p>
             <ul class="doc-list">
-                <li><a href="dokumenty/Stanovy 1.pdf" target="_blank">Stanovy spolku (PDF)</a></li>
-                <li><a href="dokumenty/arovaci%20smlouv.pdf" target="_blank">Darovací smlouva (PDF)</a></li>
+                <li><a href="dokumenty/Stanovy%201.pdf" target="_blank">Stanovy spolku (PDF)</a></li>
+                <li><a href="dokumenty/darovaci%20smlouva.pdf" target="_blank">Darovací smlouva (PDF)</a></li>
                 <li><a href="dokumenty/přihláška.pdf" target="_blank">Přihláška do spolku (PDF)</a></li>
             </ul>
         </section>
@@ -354,14 +353,13 @@
 
             <h3 id="archiv-2024">Rok 2024</h3>
             <div class="gallery">
-                <img src="http://www.ambros.cz/zadsoub/skm.jpg" alt="2024 - Historická škola">
-                <img src="https://www.otaslavice.cz/data/editor/124cs_3_big.jpg?gcm_date=1666208871" alt="2024 - Muzeum řemesel">
+                <img src="fotky/2024/auto.jpg" alt="Auto v Otaslavicích">
             </div>
 
             <h3 id="archiv-2025">Rok 2025</h3>
             <div class="gallery">
-                <img src="https://g.denik.cz/59/9b/kostel_otaslavice_201102162hist01_denik-630.jpg" alt="2025 - Kostel sv. Michala">
-                <img src="http://www.ambros.cz/zadsoub/iifotodolak/fotdol5.jpg" alt="2025 - Starý mlýn">
+                <img src="fotky/2025/pohled%201940.jpg" alt="Pohled na obec 1940">
+                <img src="fotky/2025/hladomorna.jpg" alt="Hladomorna">
             </div>
 
             <p><em>Archiv je průběžně doplňován. Máte-li historické snímky, rádi je zařadíme.</em></p>
@@ -413,6 +411,3 @@
     </script>
 </body>
 </html>
-
-
-
