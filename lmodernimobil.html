@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spolek Otaslavice historie a současnost</title>
+  <style>
+    :root {
+      --primary: #3498db;
+      --dark: #2c3e50;
+      --light-bg: rgba(255,255,255,0.94);
+      --shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #333;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/a/a9/Obec_od_Doln%C3%ADho_hradu%2C_Otaslavice%2C_okes_Prost%C4%9Bjov.jpg') center/cover fixed no-repeat;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.82);
+      z-index: -1;
+    }
+
+    header {
+      text-align: center;
+      padding: 1.8rem 1rem 1rem;
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+
+    .title-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .logo {
+      width: 72px;
+      height: 72px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 50%;
+      padding: 0.6rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .logo img { width: 100%; height: 100%; object-fit: contain; }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 6vw, 2.3rem);
+      color: #1a3c5e;
+      font-weight: 700;
+    }
+
+    .description-wrapper {
+      max-width: 1100px;
+      margin: 0 auto 3rem;
+      padding: 0 1rem;
+    }
+
+    .description {
+      font-size: clamp(1rem, 3.5vw, 1.12rem);
+      line-height: 1.45;
+      color: #444;
+      background: rgba(255,255,255,0.92);
+      padding: 1.5rem 1.8rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .menu-container {
+      max-width: 1200px;
+      margin: 0 auto 4rem;
+      padding: 0 1rem;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .menu-tile {
+      aspect-ratio: 1 / 1;
+      background: rgba(52, 152, 219, 0.12);
+      border: 1.5px solid rgba(52, 152, 219, 0.28);
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+      backdrop-filter: blur(8px);
+    }
+
+    .menu-tile:active,
+    .menu-tile:hover {
+      transform: translateY(-8px) scale(1.035);
+      box-shadow: 0 16px 32px rgba(0,0,0,0.18);
+      border-color: #3498db;
+      background: rgba(52, 152, 219, 0.24);
+    }
+
+    .tile-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      color: #1a3c5e;
+    }
+
+    .tile-icon {
+      width: 56px;
+      height: 56px;
+      margin-bottom: 0.8rem;
+      opacity: 0.88;
+      transition: opacity 0.3s;
+    }
+
+    .menu-tile:hover .tile-icon,
+    .menu-tile:active .tile-icon { opacity: 1; }
+
+    .tile-label {
+      font-size: clamp(1rem, 3.2vw, 1.18rem);
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .archive-subtiles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1.5rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.55s ease;
+    }
+
+    .archive-open .archive-subtiles {
+      max-height: 900px;
+    }
+
+    .archive-subtile {
+      aspect-ratio: 1 / 1;
+      background: rgba(44, 62, 80, 0.45);
+      border: 2px solid rgba(44, 62, 80, 0.65);
+      border-radius: 14px;
+      font-size: clamp(1.3rem, 5vw, 1.8rem);
+      font-weight: 700;
+      color: white;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+      transition: all 0.28s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .archive-subtile:hover {
+      background: rgba(44, 62, 80, 0.75);
+      transform: scale(1.04);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+    }
+
+    main {
+      padding: 0 1rem 5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .content-section {
+      display: none;
+      position: relative;
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
+    .back-btn {
+      position: sticky;
+      top: 1rem;
+      z-index: 10;
+      display: inline-block;
+      margin: 0 auto 1.5rem;
+      padding: 0.8rem 1.6rem;
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: all 0.25s;
+    }
+
+    .back-btn:hover {
+      background: #2980b9;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+
+    section {
+      background: rgba(255,255,255,0.92);
+      padding: 1.8rem;
+      margin-bottom: 3rem;
+      border-radius: 14px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #1a3c5e;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 0.6rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: rgba(44,62,80,0.92);
+      color: #ecf0f1;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+      .title-row { gap: 0.8rem; }
+      .logo { width: 64px; height: 64px; padding: 8px; }
+      h1 { font-size: 1.9rem; }
+      .description { font-size: 1.05em; padding: 1.2rem 1.4rem; }
+      .menu-grid { gap: 1rem; }
+      .tile-icon { width: 48px; height: 48px; }
+      .tile-label { font-size: 1.05em; }
+      .back-btn { width: 100%; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="title-row">
+    <div class="logo">
+      <img src="logo/logo.svg" alt="Logo spolku">
+    </div>
+    <h1>Spolek Otaslavice historie a současnost</h1>
+  </div>
+</header>
+
+<div class="description-wrapper">
+  <div class="description">
+    Hlavním účelem spolku je shromažďovat v souladu s platnými zákony historické informace v podobě vyprávění, dokumentů, fotografií, kronik, které se pojí místopisně k obci Otaslavice a nejbližšímu regionu.
+  </div>
+</div>
+
+<div class="menu-container">
+  <div class="menu-grid">
+    <div class="menu-tile" data-section="dokumenty">
+      <div class="tile-content">
+        <img class="tile-icon" src="https://img.icons8.com/fluency/96/000000/document.png" alt="Dokumenty">
+        <div class="tile-label">Dokumenty</div>
+      </div>
+    </div>
+
+    <div class="menu-tile" data-section="aktuality">
+      <div class="tile-content">
+        <img class="tile-icon" src="https://img.icons8.com/fluency/96/000000/news.png" alt="Aktuality">
+        <div class="tile-label">Aktuality</div>
+      </div>
+    </div>
+
+    <div class="menu-tile" id="archive-tile-trigger" onclick="toggleArchive()">
+      <div class="tile-content">
+        <img class="tile-icon" src="https://img.icons8.com/fluency/96/000000/image-gallery.png" alt="Archiv">
+        <div class="tile-label">Archiv fotografií</div>
+      </div>
+    </div>
+
+    <div class="menu-tile" data-section="kontakt">
+      <div class="tile-content">
+        <img class="tile-icon" src="https://img.icons8.com/fluency/96/000000/phone.png" alt="Kontakt">
+        <div class="tile-label">Kontakt</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rozbalovací roky -->
+  <div class="archive-tile" id="archive-tile">
+    <div class="archive-subtiles" id="archive-subtiles">
+      <div class="archive-subtile" data-section="archiv-2024">2024</div>
+      <div class="archive-subtile" data-section="archiv-2025">2025</div>
+      <div class="archive-subtile" data-section="archiv-2026">2026</div>
+    </div>
+  </div>
+</div>
+
+<main>
+  <!-- Dokumenty -->
+  <div id="dokumenty" class="content-section">
+    <button class="back-btn" onclick="hideAllSections()">← Zpět na menu</button>
+    <section>
+      <h2>Dokumenty</h2>
+      <p>Ke stažení najdete základní dokumenty spolku:</p>
+      <ul class="doc-list">
+        <li><a href="dokumenty/Stanovy%201.pdf" target="_blank">Stanovy spolku (PDF)</a></li>
+        <li><a href="dokumenty/darovaci%20smlouva.pdf" target="_blank">Darovací smlouva (PDF)</a></li>
+        <li><a href="dokumenty/přihláška.pdf" target="_blank">Přihláška do spolku (PDF)</a></li>
+      </ul>
+    </section>
+  </div>
+
+  <!-- Aktuality -->
+  <div id="aktuality" class="content-section">
+    <button class="back-btn" onclick="hideAllSections()">← Zpět na menu</button>
+    <section>
+      <h2>Aktuality</h2>
+      <p>Aktuální informace o dění v obci Otaslavice související s historií.</p>
+      <ul>
+        <li><strong>Leden 2026</strong><br>Schválený rozpočet obce na rok 2025 a střednědobý výhled (podpora kulturních a historických aktivit).</li>
+        <li><strong>Prosinec 2025</strong><br>Uzavření pošty v Otaslavicích.</li>
+        <li><strong>Celý rok 2025</strong><br>Činnost Klubu vojenské historie a spolku Otava.</li>
+        <li><strong>Probíhající</strong><br>Muzeum řemesel a naučná stezka Předinou za poznáním.</li>
+      </ul>
+    </section>
+  </div>
+
+  <!-- Archiv 2024 -->
+  <div id="archiv-2024" class="content-section">
+    <button class="back-btn" onclick="hideAllSections()">← Zpět na menu</button>
+    <section>
+      <h2>Archiv fotografií – Rok 2024</h2>
+      <div class="gallery">
+        <img src="fotky/2024/auto.jpg" alt="Auto v Otaslavicích">
+        <!-- další fotky -->
+      </div>
+    </section>
+  </div>
+
+  <!-- Archiv 2025 -->
+  <div id="archiv-2025" class="content-section">
+    <button class="back-btn" onclick="hideAllSections()">← Zpět na menu</button>
+    <section>
+      <h2>Archiv fotografií – Rok 2025</h2>
+      <div class="gallery">
+        <img src="fotky/2025/pohled%201940.jpg" alt="Pohled na obec 1940">
+        <img src="fotky/2025/hladomorna.jpg" alt="Hladomorna">
+        <!-- další fotky -->
+      </div>
+    </section>
+  </div>
+
+  <!-- Archiv 2026 -->
+  <div id="archiv-2026" class="content-section">
+    <button class="back-btn" onclick="hideAllSections()">← Zpět na menu</button>
+    <section>
+      <h2>Archiv fotografií – Rok 2026</h2>
+      <p>Archiv zatím prázdný – průběžně doplňujeme.</p>
+    </section>
+  </div>
+
+  <!-- Kontakt -->
+  <div id="kontakt" class="content-section">
+    <button class="back-btn" onclick="hideAllSections()">← Zpět na menu</button>
+    <section>
+      <h2>Kontakt</h2>
+      <div class="contact-info">
+        <p><strong>Sídlo spolku:</strong><br>Otaslavice 149, 798 06 Otaslavice</p>
+        <p><strong>Kontaktní osoba:</strong><br>Jana Halozková</p>
+        <p><strong>Telefon:</strong><br>608 123 123</p>
+        <p><strong>E-mail:</strong><br><a href="mailto:jana@seznam.cz">jana@seznam.cz</a></p>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <p>Vypracoval Ing. Kamil Pavlů &nbsp;&nbsp;|&nbsp;&nbsp; aktualizováno 6. 1. 2026</p>
+</footer>
+
+<script>
+// Skryje všechny sekce a vrátí na začátek stránky (dlaždice)
+function hideAllSections() {
+  document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+  document.querySelector('.archive-tile').classList.remove('archive-open'); // sbalí i roky
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Zobrazí sekci po kliknutí na dlaždici
+document.querySelectorAll('.menu-tile[data-section], .archive-subtile[data-section]').forEach(tile => {
+  tile.addEventListener('click', function() {
+    // Skryje všechny sekce
+    document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+
+    // Zobrazí cílovou sekci
+    const targetId = this.getAttribute('data-section');
+    const targetSection = document.getElementById(targetId);
+    if (targetSection) {
+      targetSection.classList.add('active');
+      // Plynulý scroll na začátek sekce (s rezervou pro sticky tlačítko)
+      targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// Rozbalení/sbalení archivu při kliknutí na "Archiv fotografií" + scroll na poddlaždice
+document.getElementById('archive-tile-trigger').addEventListener('click', function() {
+  const archiveTile = document.querySelector('.archive-tile');
+  archiveTile.classList.toggle('archive-open');
+
+  if (archiveTile.classList.contains('archive-open')) {
+    // Scroll na začátek poddlaždic (2024/2025/2026)
+    setTimeout(() => {
+      archiveTile.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100); // malé zpoždění, aby se stihlo rozbalit
+  }
+});
+</script>
+
+</body>
+</html>
